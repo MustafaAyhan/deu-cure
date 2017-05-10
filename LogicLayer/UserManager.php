@@ -103,6 +103,18 @@ class UserManager {
         global $connection;
         $query = "DELETE FROM users WHERE tc = $tc ";
         $delete_query = mysqli_query($connection, $query);
+        if($delete_query)
+            return true;
+        return false;
+    }
+    
+    public static function deleteAssaysByTc($tc){
+        global $connection;
+        $query = "DELETE FROM assays WHERE tc = $tc ";
+        $delete_query = mysqli_query($connection, $query);
+        if($delete_query)
+            return true;
+        return false;
     }
 }
 ?>

@@ -1,5 +1,3 @@
-tinymce.init({ selector: "textarea" });
-
 $(document).ready(function () {
 
 	$('#selectAllBoxes').click(function (event) {
@@ -22,15 +20,15 @@ $(document).ready(function () {
     });*/
 });
 
-function loadUsersOnline() {
-    $.get("functions.php?onlineusers=result", function(data){
-        $(".usersonline").text(data);
-	});
-}
-
-setInterval(function(){
-    loadUsersOnline();
-},500);
+//function loadUsersOnline() {
+//    $.get("functions.php?onlineusers=result", function(data){
+//        $(".usersonline").text(data);
+//	});
+//}
+//
+//setInterval(function(){
+//    loadUsersOnline();
+//},500);
 
 
 

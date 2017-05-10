@@ -1,6 +1,7 @@
 <?php
 include "DataLayer/db.php";
 include "LogicLayer/UserManager.php";
+include("includes/delete_modal.php");
 session_start();
 if(isset($_SESSION['user_role'])){
     $tc = $_SESSION['tc'];

@@ -9,10 +9,18 @@
             <?php 
             if(!isset($_SESSION['user_role']))
                 echo "<a href='login.php'><i class='glyphicon glyphicon-user'></i></a>";
-            else
-                echo "<a href='emergency.php' title='Call An Ambulance'><i class='glyphicon glyphicon-plus'></i></a>"; //WEB SERVICE TO THE EMERGENCY
+            else{
+                //Emergency Module web service.
+                echo "<a target='_blank' href='emergency.php?tc={$_SESSION['tc']}&firstName={$_SESSION['firstName']}&surName={$_SESSION['surName']}&address={$_SESSION['address']}' id='' title='Call An Ambulance'><i class='glyphicon glyphicon-plus'></i></a>";
+            }
+                //WEB SERVICE TO THE EMERGENCY
             ?>
-            </div>            
+            
+            </div>
+            <form action="emergency.php" method="post">
+                <input type="hidden" id="user_tc" value="<?php echo $_SESSION['tc']; ?>">
+            </form>
+                      
             <script src="js/jquery.magnific-popup.js" type="text/javascript"></script>
             <div id="small-dialog" class="mfp-hide">
                 <div class="search-top">

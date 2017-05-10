@@ -38,7 +38,7 @@
                                 <a href="users.php">View All Users</a>
                             </li>
                             <li>
-                                <a href="users.php?source=add_user">Add User</a>
+                                <a href="../register.php">Add User</a>
                             </li>
                         </ul>
                     </li>
