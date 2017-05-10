@@ -9,8 +9,10 @@
             <?php 
             if(!isset($_SESSION['user_role']))
                 echo "<a href='login.php'><i class='glyphicon glyphicon-user'></i></a>";
-            else
-                echo "<a href='totheappointment.php' title='Make An Appointment'><i class='glyphicon glyphicon-list-alt'></i></a>"; //WEB SERVICE TO THE EMERGENCY
+            else{
+                //Emergency Module web service.
+                echo "<a target='_blank' href='emergency.php?tc={$_SESSION['tc']}&firstName={$_SESSION['firstName']}&surName={$_SESSION['surName']}&address={$_SESSION['address']}' id='' title='Call An Ambulance'><i class='glyphicon glyphicon-plus'></i></a>";
+            }
             ?>
             </div>  
             <script src="js/jquery.magnific-popup.js" type="text/javascript"></script>
@@ -44,7 +46,18 @@
         <br>
         <div id="page-wrapper">
             <div class="container-fluid">
-                <!-- Page Heading -->
+                <div class="row">
+                    <form action="appointment2.php" method="post">
+                        <a href="appointment3.php">Make an Appoinment</a>
+                        <input type="hidden" name="user_tc" value="<?php echo $_SESSION['tc']; ?>">
+                        <input type="hidden" name="user_firstName" value="<?php echo $_SESSION['firstName']; ?>">
+                        <input type="hidden" name="user_surName" value="<?php echo $_SESSION['surName']; ?>">
+                        <input type="submit" value="Get Appoinment Info">
+                    </form>
+                </div>
+                <?php
+                if(isset($_POST['appoinmentsArray'])){
+                    ?>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="container">
@@ -61,26 +74,53 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>asd</td>
-                                        <td>asd</td>
-                                        <td>asd</td>
-                                        <td>asd</td>
-                                        <td>qwe</td>
-                                        <td>qwe</td>
-                                        <td>qwe</td>
-                                    </tr>
-                                    <tr></tr>
-                                    <tr></tr>
-                                    <tr></tr>
-                                    <tr></tr>
-                                    <tr></tr>
-                                    <tr></tr>
+                                <?php
+                                $appoinments = $_POST['appoinmentsArray'];
+                                for($i = 0; $i < count($appoinments); $i++) { 
+                                    echo "<tr>";
+                                        echo "<td>{$_SESSION['tc']}</td>";
+                                        echo "<td>{$_SESSION['firstName']}</td>";
+                                        echo "<td>{$_SESSION['surName']}</td>";
+                                        echo "<td>{$appoinments[i]->doctorName}</td>";
+                                        echo "<td>{$appoinments[i]->date}</td>";
+                                        echo "<td>{$appoinments[i]->hour}</td>";
+                                        echo "<td>{$appoinments[i]->department}</td>";
+                                    echo "</tr>";
+                                    }
+                                        ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+                <?php
+                }
+                ?>
             </div>
         </div>
+        <?php
+        if(isset($_POST['tc'])){
+            if(isset($_POST['password'])){
+                $tc = $_POST['tc'];
+                //check the db
+                $password = $_POST['password'];
+                $flag = true;
+                $flag2 = array();
+                array_push($flag2, array("Flag"=>$flag));
+                $flag = json_encode(array("user"=>$flag2));
+                echo $flag;
+                ?>
+
+                <form id="jsform" action="appointment3.php" method="post">
+                   <input type="hidden" name="flag" value='<?php echo $flag; ?>'>
+                </form>
+                <script type="text/javascript">
+                    document.getElementById('jsform').submit();
+                </script>
+
+                <?php
+                
+            }
+        }
+        ?>
 <?php include "includes/footer.php"; ?>

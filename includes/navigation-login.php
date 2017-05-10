@@ -18,9 +18,28 @@
                 <li><a href="about.php" style="color: #fff">ABOUT</a></li>
                 <li><a href="gallery.php" style="color: #fff">GALLERY</a></li>
                 <li><a href="contact.php" style="color: #fff">CONTACT</a></li>
-                <li><a href="login.php" style="color: #fff">LOGIN</a></li>
-                <li><a href="register.php" style="color: #fff">REGISTER</a></li>
+                <?php
+                if(!isset($_SESSION['user_role'])){
+                ?>
+                    <li><a href="login.php" style="color: #fff">LOGIN</a></li>
+                    <li><a href="register.php" style="color: #fff">REGISTER</a></li>
+                <?php
+                }
+                else
+                    echo "<li><a href='/deu-cure/includes/delete.php' style='color: #fff'>DELETE</a></li>";
+                ?>
+                
             </ul>
         </div>
     </div>                    
 </nav>
+<script>
+$(document).ready(function(){
+    $(".delete_link").on('click', function(){
+        var id = $(this).attr("rel");
+        var delete_url = "profile.php?delete=" + id + " ";
+        $(".delete_modal_link").attr("href", delete_url);
+        $("#myModal").modal('show');
+    });
+});
+</script>
