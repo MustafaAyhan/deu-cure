@@ -10,7 +10,7 @@
             if(!isset($_SESSION['user_role']))
                 echo "<a href='login.php'><i class='glyphicon glyphicon-user'></i></a>";
             else{
-                echo "<a href='emergency.php?tc={$_SESSION['tc']}&firstName={$_SESSION['firstName']}&surName={$_SESSION['surName']}&address={$_SESSION['address']}' id='' title='Call An Ambulance'><i class='glyphicon glyphicon-plus'></i></a>";
+                echo "<a target='_blank' href='emergency.php?tc={$_SESSION['tc']}&firstName={$_SESSION['firstName']}&surName={$_SESSION['surName']}&address={$_SESSION['address']}' id='' title='Call An Ambulance'><i class='glyphicon glyphicon-plus'></i></a>";
             }
                 //WEB SERVICE TO THE EMERGENCY
             ?>
@@ -230,4 +230,48 @@
                     <div class="clearfix"></div>
             </div>
         </div>
+        <script>
+			// JQuery 
+			$(document).ready(function() { // when DOM is ready, this will be executed
+			
+			$("#btnCallSrvc").click(function(e) { // click event for "btnCallSrvc"
+				
+				var cntrCode = $("#txtCode").val(); // get country code
+				if(cntrCode == "") {
+					alert("Enter country code!");
+					$("#txtCode").focus();
+					return;
+				}
+				
+				var retType = $("#radioJson").is(":checked") ? "json" : "xml"; // get reply format
+				var count = $("#txtNum").val(); // get desired country count
+				
+				$.ajax({ // start an ajax POST 
+					type	: "post",
+					url		: "countries.php",
+					data	:  { 
+						"code"	: cntrCode, 
+						"format": retType, 
+						"num"	: count 
+					},
+					success : function(reply) { // when ajax executed successfully
+						console.log(reply);
+						if(retType == "json") {
+							$("#divCallResult").html( JSON.stringify(reply) );
+						}
+						else {
+							$("#divCallResult").html( new XMLSerializer().serializeToString(reply) );
+						}
+						
+					},
+					error   : function(err) { // some unknown error happened
+						console.log(err);
+						alert(" There is an error! Please try again. " + err); 
+					}
+				});
+				
+			});
+			
+		});
+		</script>
 <?php include "includes/footer.php";?>
