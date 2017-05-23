@@ -11,7 +11,15 @@
                 echo "<a href='login.php'><i class='glyphicon glyphicon-user'></i></a>";
             else{
                 //Emergency Module web service.
-                echo "<a target='_blank' href='emergency.php?tc={$_SESSION['tc']}&firstName={$_SESSION['firstName']}&surName={$_SESSION['surName']}&address={$_SESSION['address']}' id='' title='Call An Ambulance'><i class='glyphicon glyphicon-plus'></i></a>";
+                $userTc = $_SESSION['tc'];
+                $userFirstName = $_SESSION['firstName'];
+                $userSurname = $_SESSION['surName'];
+                $userAddress = $_SESSION['address'];
+                $emergencyInfoArray = array();
+                array_push($emergencyInfoArray, array("tc"=>$userTc, "firstName"=>$userFirstName, "surname"=>$userSurname, "address"=>$userAddress));
+                $allInfoToEmergency = json_encode(array('Emergency'=>$emergencyInfoArray));
+                //echo $allInfoToEmergency;
+                echo "<a target='_blank'  href='emergency2.php?emergency={$allInfoToEmergency}' id='' title='Call An Ambulance'><i class='glyphicon glyphicon-plus'></i></a>";
             }
                 //WEB SERVICE TO THE EMERGENCY
             ?>

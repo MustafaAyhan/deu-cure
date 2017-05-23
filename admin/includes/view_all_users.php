@@ -1,5 +1,4 @@
 <?php
-include("delete_modal.php");
 
 if(isset($_POST['delete'])) {
     UserManager::deleteUser($_POST['u_tc']);
@@ -64,63 +63,59 @@ if(isset($_POST['checkBoxArray'])) {
                         
                         <tbody>
                             <tr>
-                               <?php
-                                $userList = UserManager::getAllUsers();
-                                
-                                for($i = 0; $i < count($userList); $i++) {                                    
+                           <?php
+                            $userList = UserManager::getAllUsers();
+
+                            for($i = 0; $i < count($userList); $i++) {  
                                     echo "<tr>";
-                                    ?>
-                <td><input class='checkBoxes' type='checkbox' name='checkBoxArray[]' value='<?php echo $userList[$i]->getTc(); ?>'></td>
-                                    <?php
-                                    echo "<td>{$userList[$i]->getTc()}</td>";
-                                    echo "<td>{$userList[$i]->getFirstName()}</td>"; 
-                                    echo "<td>{$userList[$i]->getSurName()}</td>";
+                            ?>
+                            <td><input class='checkBoxes' type='checkbox' name='checkBoxArray[]' value='<?php echo $userList[$i]->getTc(); ?>'></td>
+                                <?php
+                                echo "<td>{$userList[$i]->getTc()}</td>";
+                                echo "<td>{$userList[$i]->getFirstName()}</td>"; 
+                                echo "<td>{$userList[$i]->getSurName()}</td>";
+                                if($userList[$i]->getBirthDate() == NULL || strcmp($userList[$i]->getBirthDate(),"0000-00-00") == 0)
+                                    echo "<td>Null</td>";
+                                else
                                     echo "<td>{$userList[$i]->getBirthDate()}</td>";
-                                    echo "<td>{$userList[$i]->getEmail()}</td>";
-                                    if($userList[$i]->getTel() == NULL)
-                                        echo "<td>Null</td>";
-                                    else
-                                        echo "<td>{$userList[$i]->getTel()}</td>";
-                                    
-                                    if($userList[$i]->getAddress() == NULL)
-                                        echo "<td>Null</td>";
-                                    else
-                                        echo "<td>{$userList[$i]->getAddress()}</td>";
-                                    
-                                    if($userList[$i]->getGender() == NULL)
-                                        echo "<td>Null</td>";
-                                    else
-                                        echo "<td>{$userList[$i]->getGender()}</td>";
-                                    
-                                    if($userList[$i]->getBloodType() == NULL)
-                                        echo "<td>Null</td>";
-                                    else
-                                        echo "<td>{$userList[$i]->getBloodType()}</td>";
-                                    
-                                    echo "<td>{$userList[$i]->getUserRole()}</td>";
-                                    echo "<td><a class='btn btn-info' href='users.php?source=edit_user&u_tc={$userList[$i]->getTc()}'>Edit</a></td>";
-                                    echo "<input type='hidden' name='u_tc' value='{$userList[$i]->getTc()};'>";
-                                    ?>
-                                    <form method="post">
-                                        <input type="hidden" name="u_tc" value="<?php echo $userList[$i]->getTc();?>">
-                                        <?php
-                                            echo "<td><input class='btn btn-danger delete_link' type='submit' name='delete' value='Delete'></td>";
-//                                            
-                                        ?>
-                                    </form>
-                                    <?php
-//                                  <a href='javascript:void(0)' rel='{$userList[$i]->getTc()}' class='delete_link btn btn-danger'>Delete</a>    
-                                    echo "</tr>";
-                                }
+                                
+                                echo "<td>{$userList[$i]->getEmail()}</td>";
+                                if($userList[$i]->getTel() == NULL)
+                                    echo "<td>Null</td>";
+                                else
+                                    echo "<td>{$userList[$i]->getTel()}</td>";
+
+                                if($userList[$i]->getAddress() == NULL)
+                                    echo "<td>Null</td>";
+                                else
+                                    echo "<td>{$userList[$i]->getAddress()}</td>";
+
+                                if($userList[$i]->getGender() == NULL)
+                                    echo "<td>Null</td>";
+                                else
+                                    echo "<td>{$userList[$i]->getGender()}</td>";
+
+                                if($userList[$i]->getBloodType() == NULL)
+                                    echo "<td>Null</td>";
+                                else
+                                    echo "<td>{$userList[$i]->getBloodType()}</td>";
+
+                                echo "<td>{$userList[$i]->getUserRole()}</td>";
+                                echo "<td><a class='btn btn-info' href='users.php?source=edit_user&u_tc={$userList[$i]->getTc()}'>Edit</a></td>";
+                                echo "<input type='hidden' name='u_tc' value='{$userList[$i]->getTc()};'>";
                                 ?>
+                                <form method="post">
+                                    <input type="hidden" name="u_tc" value="<?php echo $userList[$i]->getTc();?>">
+                                    <?php
+                                        echo "<td><input class='btn btn-danger delete_link' type='submit' name='delete' value='Delete'></td>";
+//                                            
+                                    ?>
+                                </form>
+                            <?php
+                                echo "</tr>";
+                            }
+                            ?>
                             </tr>
                         </tbody>
                     </table>
                 </form>
-                <script>
-                $(document).ready(function(){
-                    $(".delete_link").on('click', function(){
-                        $("#myModal").modal('show');
-                    });
-                });
-                </script>

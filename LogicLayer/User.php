@@ -12,7 +12,7 @@
 		private $bloodType;
 		private $userRole;
 		
-		function __construct($tc = NULL, $firstName = NULL, $surName = NULL, $birthDate = NULL, $email = NULL, $password = NULL, $tel = NULL, $address = NULL, $gender = NULL, $bloodType = NULL, $userRole = NULL) {
+		function __construct($tc = NULL, $firstName = NULL, $surName = NULL, $userRole = NULL, $birthDate = NULL, $email = NULL, $password = NULL, $gender = NULL, $tel = NULL, $address = NULL, $bloodType = NULL) {
 			$this->tc         = $tc;
 			$this->firstName  = $firstName;
 			$this->surName    = $surName;

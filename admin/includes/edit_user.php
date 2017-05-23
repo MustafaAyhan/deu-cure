@@ -15,7 +15,7 @@ if(isset($_GET['source'])){
         $bloodType  = $_POST['bloodType'];
         $userRole   = $_POST['userRole'];
         
-        $user = new User($tc, $firstName, $surName, $birthDate, $email, $password, $tel, $address, $gender, $bloodType, $userRole);
+        $user = new User($tc, $firstName, $surName, $userRole, $birthDate, $email, $password, $gender, $tel, $address, $bloodType);
         UserManager::updateUser($user);
         echo "<p class='bg-success'>User Updated. <a href='users.php'>Edit More Users</a></p>";
     }

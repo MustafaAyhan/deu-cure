@@ -33,13 +33,3 @@
         </div>
     </div>                    
 </nav>
-<script>
-$(document).ready(function(){
-    $(".delete_link").on('click', function(){
-        var id = $(this).attr("rel");
-        var delete_url = "profile.php?delete=" + id + " ";
-        $(".delete_modal_link").attr("href", delete_url);
-        $("#myModal").modal('show');
-    });
-});
-</script>

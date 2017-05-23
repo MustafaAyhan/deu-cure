@@ -1,7 +1,6 @@
 <?php
 include "DataLayer/db.php";
 include "LogicLayer/UserManager.php";
-include("includes/delete_modal.php");
 session_start();
 if(isset($_SESSION['user_role'])){
     $tc = $_SESSION['tc'];
@@ -57,7 +56,7 @@ if(isset($_SESSION['user_role'])){
             }
         }
         if(empty($error)) {
-            $user = new User($tc, $firstName, $surName, $birthdate, $email, $password, $tel, $address, $gender, $bloodType, $user->getUserRole());
+            $user = new User($tc, $firstName, $surName, $user->getUserRole(), $birthdate, $email, $password, $gender, $tel, $address, $bloodType);
             if(UserManager::updateUser($user)){
                 echo "<script type='text/javascript'>alert('Congrats!');</script>";
                 //loginUser($tc, $password);

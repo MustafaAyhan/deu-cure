@@ -1,5 +1,6 @@
 <?php ob_start(); ?>
 <?php include "../DataLayer/db.php"; ?>
+<?php include "../LogicLayer/UserManager.php"; ?>
 <?php session_start(); ?>
 
 <?php
@@ -36,16 +37,17 @@ if($_SESSION['user_role'] != 'Admin') {
           google.charts.setOnLoadCallback(drawChart);
           function drawChart() {
             var data = google.visualization.arrayToDataTable([
-              ['Task', 'Hours per Day'],
-              ['Work',     11],
-              ['Eat',      2],
-              ['Commute',  2],
-              ['Watch TV', 2],
-              ['Sleep',    7]
+              ['Gender', 'Percent'],
+                <?php
+                $maleNumber = UserManager::maleCount(); 
+                $femaleNumber = UserManager::femaleCount(); 
+                ?>
+              ['Male',     <?php echo $maleNumber;?>],
+              ['Female',      <?php echo $femaleNumber;?>]
             ]);
 
             var options = {
-              title: 'My Daily Activities',
+              title: 'User Gender Percent Graphic',
               is3D: true,
             };
 

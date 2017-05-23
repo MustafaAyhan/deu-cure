@@ -1,5 +1,4 @@
 <?php include "includes/admin_header.php"; ?>
-<?php include "../LogicLayer/UserManager.php"; ?>
 <?php
 if($_SESSION['user_role'] != 'Admin') {
     header("Location: ../index.php");
