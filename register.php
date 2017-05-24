@@ -4,7 +4,6 @@ include "DataLayer/db.php";
 include "LogicLayer/UserManager.php";
 
 if(isset($_POST['register'])){
-    echo "in if -1<br>";
     $tc         = $_POST['tc'];
     $firstName  = $_POST['firstName'];
     $surName    = $_POST['surName'];
@@ -16,10 +15,11 @@ if(isset($_POST['register'])){
     $gender     = $_POST['gender'];
     $bloodType  = $_POST['bloodType'];
     
+    $tc_length = strlen((string)$tc);
     $error = ['tc' => '', 'firstName' => '', 'surName' => '', 'email' => '', 'password' => ''];
     if($tc == '') {
         $error['tc'] = "T.C. cannot be empty.";
-    } elseif(strlen($tc) != 2) {
+    } elseif($tc_length != 11) {
         $error['tc'] = "T.C. needs to be 11 characters.";
     } elseif(UserManager::tcExists($tc)) {
         $error['tc'] = "This T.C is already registred to the system. <a href='login.php'>Please login in.</a>'";
@@ -61,7 +61,7 @@ if(isset($_POST['register'])){
     echo "in if 0<br>";
     if(empty($error)) {
         echo "in if 1<br>";
-        $user = new User($tc, $firstName, $surName, $birthdate, $email, $password, $tel, $address, $gender, $bloodType, 'Patient');
+        $user = new User($tc, $firstName, $surName, 'Patient', $birthdate, $email, $password, $gender, $tel, $address, $bloodType);
         echo "in if 2<br>";
         if(UserManager::registerUser($user)){
             echo "in if 3<br>";
@@ -176,14 +176,14 @@ if(isset($_POST['register'])){
                             <p>Blood Type</p>
                             <select name="bloodType" class="form-control" id="">
                                 <option value=""></option>
-                                <option value="Ah-">A(Rh-)</option>
-                                <option value="Ah+">A(Rh+)</option>
-                                <option value="Bh-">B(Rh-)</option>
-                                <option value="Bh+">B(Rh+)</option>
-                                <option value="AB-">AB(Rh-)</option>
-                                <option value="AB+">AB(Rh+)</option>
-                                <option value="0rh-">0(Rh-)</option>
-                                <option value="0rh+">0(Rh+)</option>
+                                <option value="A(Rh-)">A(Rh-)</option>
+                                <option value="A(Rh+)">A(Rh+)</option>
+                                <option value="B(Rh-)">B(Rh-)</option>
+                                <option value="B(Rh+)">B(Rh+)</option>
+                                <option value="AB(Rh-)">AB(Rh-)</option>
+                                <option value="AB(Rh+)">AB(Rh+)</option>
+                                <option value="0(Rh-)">0(Rh-)</option>
+                                <option value="0(Rh+)">0(Rh+)</option>
                             </select>
                             <h6> </h6>
 <!--
@@ -219,4 +219,4 @@ if(isset($_POST['register'])){
         </script>
         <!-- //Calendar -->
     </body>
-</htmlyym
+</html>
