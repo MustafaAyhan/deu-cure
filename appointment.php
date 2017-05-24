@@ -11,7 +11,15 @@
                 echo "<a href='login.php'><i class='glyphicon glyphicon-user'></i></a>";
             else{
                 //Emergency Module web service.
-                echo "<a target='_blank' href='emergency.php?tc={$_SESSION['tc']}&firstName={$_SESSION['firstName']}&surName={$_SESSION['surName']}&address={$_SESSION['address']}' id='' title='Call An Ambulance'><i class='glyphicon glyphicon-plus'></i></a>";
+                $userTc = $_SESSION['tc'];
+                $userFirstName = $_SESSION['firstName'];
+                $userSurname = $_SESSION['surName'];
+                $userAddress = $_SESSION['address'];
+                $emergencyInfoArray = array();
+                array_push($emergencyInfoArray, array("tc"=>$userTc, "firstName"=>$userFirstName, "surname"=>$userSurname, "address"=>$userAddress));
+                $allInfoToEmergency = json_encode(array('Emergency'=>$emergencyInfoArray));
+                //echo $allInfoToEmergency;
+                echo "<a target='_blank'  href='emergency2.php?emergency={$allInfoToEmergency}' id='' title='Call An Ambulance'><i class='glyphicon glyphicon-plus'></i></a>";
             }
             ?>
             </div>  
@@ -47,13 +55,31 @@
         <div id="page-wrapper">
             <div class="container-fluid">
                 <div class="row">
-                    <form action="appointment2.php" method="post">
-                        <a href="appointment3.php">Make an Appoinment</a>
-                        <input type="hidden" name="user_tc" value="<?php echo $_SESSION['tc']; ?>">
-                        <input type="hidden" name="user_firstName" value="<?php echo $_SESSION['firstName']; ?>">
-                        <input type="hidden" name="user_surName" value="<?php echo $_SESSION['surName']; ?>">
-                        <input type="submit" value="Get Appoinment Info">
-                    </form>
+                    <div>
+                        <p align="center">
+                            To Make An Appointment, Please Go To <a href="appointment3.php" style="color:#37b7e5;">Appointment Module</a>
+                        </p>
+                    </div>
+                    <br />
+                    <br />
+                    
+                    <div align="center">
+                        <form action="appointment2.php" method="post">
+                            <?php
+                                $userTc = $_SESSION['tc'];
+                                /*$userFirstName = $_SESSION['firstName'];
+                                $userSurname = $_SESSION['surName'];
+                                $appointmentInfoArray = array();
+                                array_push($appointmentInfoArray, array("tc"=>$userTc, "firstName"=>$userFirstName, "surname"=>$userSurname));
+                                $allInfoToAppointment = json_encode(array('Appointment'=>$appointmentInfoArray));*/
+                            ?>
+                            <input type="hidden" name="SSN" value='<?php echo $userTc; ?>'>
+                            <!--<input type="hidden" name="Appointment" value='<//?php echo $allInfoToAppointment; ?>'>-->
+                            <input type="submit" value="Get Appoinment Info" style="background: #37b7e5; color:white">
+                        </form>
+                    </div>
+                    
+                    
                 </div>
                 <?php
                 if(isset($_POST['appoinmentsArray'])){
@@ -76,7 +102,9 @@
                                 <tbody>
                                 <?php
                                 $appoinments = $_POST['appoinmentsArray'];
+                                $results = json_decode($appoinments, true);
                                 for($i = 0; $i < count($appoinments); $i++) { 
+                                    
                                     echo "<tr>";
                                         echo "<td>{$_SESSION['tc']}</td>";
                                         echo "<td>{$_SESSION['firstName']}</td>";
@@ -87,7 +115,7 @@
                                         echo "<td>{$appoinments[i]->department}</td>";
                                     echo "</tr>";
                                     }
-                                        ?>
+                                ?>
                                 </tbody>
                             </table>
                         </div>
@@ -98,29 +126,5 @@
                 ?>
             </div>
         </div>
-        <?php
-        if(isset($_POST['tc'])){
-            if(isset($_POST['password'])){
-                $tc = $_POST['tc'];
-                //check the db
-                $password = $_POST['password'];
-                $flag = true;
-                $flag2 = array();
-                array_push($flag2, array("Flag"=>$flag));
-                $flag = json_encode(array("user"=>$flag2));
-                echo $flag;
-                ?>
-
-                <form id="jsform" action="appointment3.php" method="post">
-                   <input type="hidden" name="flag" value='<?php echo $flag; ?>'>
-                </form>
-                <script type="text/javascript">
-                    document.getElementById('jsform').submit();
-                </script>
-
-                <?php
-                
-            }
-        }
-        ?>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 <?php include "includes/footer.php"; ?>
