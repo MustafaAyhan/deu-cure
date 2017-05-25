@@ -135,11 +135,9 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-<!--
                 <div class="container" id="divCallResult">
                     
                 </div>
--->
             </div>
         </div>
         <?php
@@ -147,7 +145,7 @@
         ?>
         <div class="row">
             <div class="col-lg-12">
-                <div class="container"  id="divCallResult">
+                <div class="container">
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr >
@@ -185,7 +183,6 @@
             $("#btnSendedInfo").click(function(e) {
 
                 var assayJson = $("#sendedAssay").val();
-                
                 var tc = <?php echo $_SESSION['tc']; ?>;
                 var url = "http://elitelaboratory.hol.es/QueryAssayService.php";
                 <?php

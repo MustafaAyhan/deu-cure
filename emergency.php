@@ -1,4 +1,3 @@
-
 <?php include "includes/header.php"; ?>
         <?php include "includes/navigation.php"; ?>
         <!-- banner -->
@@ -59,131 +58,143 @@
                 <div class="row">
                     <div class="form-style-6">
                     <h1>Show Emergency Result</h1>
-                    <form  action="emergency2.php" method="post">
-                    <style type="text/css">
-                    .form-style-6{
-                        font: 95% Arial, Helvetica, sans-serif;
-                        max-width: 400px;
-                        margin: 10px auto;
-                        padding: 16px;
-                        background: #F7F7F7;
-                    }
-                    .form-style-6 h1{
-                        background: #37b7e5;
-                        padding: 20px 0;
-                        font-size: 140%;
-                        font-weight: 300;
-                        text-align: center;
-                        color: #fff;
-                        margin: -16px -16px 16px -16px;
-                    }
-                    .form-style-6 input[type="text"],
-                    .form-style-6 textarea,
-                    .form-style-6 select 
-                    {
-                        -webkit-transition: all 0.30s ease-in-out;
-                        -moz-transition: all 0.30s ease-in-out;
-                        -ms-transition: all 0.30s ease-in-out;
-                        -o-transition: all 0.30s ease-in-out;
-                        outline: none;
-                        box-sizing: border-box;
-                        -webkit-box-sizing: border-box;
-                        -moz-box-sizing: border-box;
-                        width: 100%;
-                        background: #fff;
-                        margin-bottom: 4%;
-                        border: 1px solid #ccc;
-                        padding: 3%;
-                        color: #666;
-                        font: 95% Arial, Helvetica, sans-serif;
-                    }
-/*
-                    .form-style-6 input[type="text"]:focus,
+                    <form>
+                        <style type="text/css">
+                        .form-style-6 {
+                            font: 95% Arial, Helvetica, sans-serif;
+                            max-width: 400px;
+                            margin: 10px auto;
+                            padding: 16px;
+                            background: #F7F7F7;
+                        }
+                        .form-style-6 h1 {
+                            background: #37b7e5;
+                            padding: 20px 0;
+                            font-size: 140%;
+                            font-weight: 300;
+                            text-align: center;
+                            color: #fff;
+                            margin: -16px -16px 16px -16px;
+                        }
+                        .form-style-6 input[type="text"],
+                        .form-style-6 textarea,
+                        .form-style-6 select {
+                            -webkit-transition: all 0.30s ease-in-out;
+                            -moz-transition: all 0.30s ease-in-out;
+                            -ms-transition: all 0.30s ease-in-out;
+                            -o-transition: all 0.30s ease-in-out;
+                            outline: none;
+                            box-sizing: border-box;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            width: 100%;
+                            background: #fff;
+                            margin-bottom: 4%;
+                            border: 1px solid #ccc;
+                            padding: 3%;
+                            color: #666;
+                            font: 95% Arial, Helvetica, sans-serif;
+                        }
+                        .form-style-6 input[type="submit"],
+                        .form-style-6 input[type="button"] {
+                            box-sizing: border-box;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            width: 100%;
+                            padding: 3%;
+                            background: #37b7e5;
+                            border-bottom: 2px solid #30C29E;
+                            border-top-style: none;
+                            border-right-style: none;
+                            border-left-style: none;    
+                            color: #fff;
+                        }
+                        .form-style-6 input[type="submit"]:hover,
+                        .form-style-6 input[type="button"]:hover {
+                            background: #2EBC99;
+                        }
+                        </style>
+                        <?php 
+                            $tc = $_SESSION['tc'];
+                            $tc = json_encode(array("Tc"=>$tc));
 
-                    {
-                        box-shadow: 0 0 5px #43D1AF;
-                        padding: 3%;
-                        border: 1px solid #43D1AF;
-                    }
-*/
-
-                    .form-style-6 input[type="submit"],
-                    .form-style-6 input[type="button"]{
-                        box-sizing: border-box;
-                        -webkit-box-sizing: border-box;
-                        -moz-box-sizing: border-box;
-                        width: 100%;
-                        padding: 3%;
-                        background: #37b7e5;
-                        border-bottom: 2px solid #30C29E;
-                        border-top-style: none;
-                        border-right-style: none;
-                        border-left-style: none;    
-                        color: #fff;
-                    }
-                    .form-style-6 input[type="submit"]:hover,
-                    .form-style-6 input[type="button"]:hover{
-                        background: #2EBC99;
-                    }
-                    </style>
-                    <?php 
-                        $tc = $_SESSION['tc'];
-                        $SendedTc = array();
-                        array_push($SendedTc, array("tc"=>$tc));
-                        $tc = json_encode(array("Tc"=>$SendedTc));
-                        
-                    ?>
-                    <input type="hidden" name="tc" value='<?php echo $tc; ?>' />
-                    <input type="submit" value="Show" />
+                        ?>
+                        <input type="hidden" id="sendedTc" value='<?php echo $tc; ?>' />
+                        <input type="button" id="btnSendedTc" value="Show" />
                     </form>
                     </div>
                 </div>
                 
             </div>
         </div>
-        <?php
-                if(isset($_POST['EmergencyPatientInfo'])){
-                    $results = json_decode($_POST['EmergencyPatientInfo'], true);
-                    $drNote = $results['Emergency'][0]['drNote'];
-                    $ptNote = $results['Emergency'][0]['ptNote'];
-                    ?>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="container">
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>TC</th>
-                                        <th>Name</th>
-                                        <th>Surname</th>
-                                        <th>Doctor Note</th>
-                                        <th>Patient Note</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <?php echo $_SESSION['tc'];?>
-                                        </td>
-                                        <td>
-                                            <?php echo $_SESSION['firstName'];?>
-                                        </td>
-                                        <td>
-                                            <?php echo $_SESSION['surName'];?>
-                                        </td>
-                                        <td>
-                                            <?php echo $drNote;?>
-                                        </td>
-                                        <td>
-                                            <?php echo $ptNote;?>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="container" id="divCallResult">
+
                 </div>
-                <?php
-                }
-                ?>
+            </div>
+        </div>
+        <script>
+            // JQuery 
+            $(document).ready(function() { // when DOM is ready, this will be executed
+
+            $("#btnSendedTc").click(function(e) {
+
+                var tcJson = $("#sendedTc").val();
+
+                $.ajax({ // start an ajax POST 
+                    method	: "post",
+                    url		: "emergency2.php",
+                    dataType: "json",
+                    data	:  { 
+                        "emergency"	: tcJson
+                    },
+                    success : function(reply) { // when ajax executed successfully
+                        console.log("reply:", reply);
+                        var jsonToString = JSON.stringify(reply);
+                        var json_obj = $.parseJSON(jsonToString);
+                        var table = "<table class='table table-bordered table-hover'>"+
+                                        "<thead>"+
+                                            "<tr>"+
+                                                "<th>TC</th>"+
+                                                "<th>Name</th>"+
+                                                "<th>Surname</th>"+
+                                                "<th>Doctor Note</th>"+
+                                                "<th>Patient Note</th>"+
+                                            "</tr>"+
+                                        "</thead>"+
+                                        "<tbody>";
+                        console.log(json_obj);
+                        for (i=0; i < json_obj.emergency.length; i++)
+                        {
+                            table+="<tr>";
+                            var emergency = json_obj.emergency[i];
+                            var tc = emergency.tc;
+                            table+="<td>" + tc + "</td>";
+                            var name = emergency.name;
+                            table+="<td>" + name + "</td>";
+                            var surname = emergency.surname;
+                            table+="<td>" + surname + "</td>";
+                            var drNote = emergency.drNote;
+                            table+="<td>" + drNote + "</td>";
+                            var ptNote = emergency.ptNote;
+                            table+="<td>" + ptNote + "</td>";
+                            table+="</tr>";
+                        }
+                        table+="</tbody>"+
+                                    "</table>";
+                        $("#divCallResult").html(table);
+                    },
+                    error   : function(err) { // some unknown error happened
+                        console.log(JSON.stringify(err));
+                        console.log(err);
+                        alert(" There is an error! Please try again. " + err); 
+                    }
+                });
+
+            });
+
+        });
+        </script>
+
 <?php include "includes/footer.php"; ?>

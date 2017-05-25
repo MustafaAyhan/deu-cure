@@ -19,24 +19,5 @@
             //var_dump($serviceParamObj);
         }
         ?>
-        <script>
-			// JQuery 
-			$(document).ready(function() { // when DOM is ready, this will be executed
-			
-			$("#btnCallSrvc").click(function(e) { // click event for "btnCallSrvc"
-				
-				$.ajax({ // start an ajax POST 
-					type	: "post",
-					url		: "appoinment.php",
-					data	:  { 
-						"tc"	: "11", 
-						"password": "asd"
-					}
-				});
-				
-			});
-			
-		});
-		</script>
     </body>
 </html>

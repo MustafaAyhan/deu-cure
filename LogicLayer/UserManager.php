@@ -1,5 +1,6 @@
 <?php
 include "User.php";
+include "Assay.php";
 
 class UserManager {
     
@@ -141,6 +142,31 @@ class UserManager {
         $query = "SELECT * FROM users WHERE gender LIKE 'Female'";
         $execute_query = mysqli_query($connection, $query);
         return mysqli_num_rows($execute_query);
+    }
+    
+    public static function getAssayNumbers($tc){
+        global $connection;
+        $query = "SELECT * FROM assays WHERE tc = {$tc}";
+        $select_assays_query = mysqli_query($connection, $query);
+        $allAssays = array();
+        while($row = mysqli_fetch_assoc($select_assays_query)){
+            $assay = new Assay($row['tc'], $row['assayNumber']);
+            array_push($allAssays,$assay);
+        }
+        
+        return $allAssays;
+    }
+    
+    public static function controlAssayNumberExist($assayNum){
+        
+        global $connection;
+        $query  = "SELECT assayNumber FROM assays WHERE assayNumber = '$assayNum'";
+        $result = mysqli_query($connection, $query);
+        if(mysqli_num_rows($result) > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 ?>

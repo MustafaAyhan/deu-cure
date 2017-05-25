@@ -64,65 +64,91 @@
                     <br />
                     
                     <div align="center">
-                        <form action="appointment2.php" method="post">
-                            <?php
-                                $userTc = $_SESSION['tc'];
-                                $userFirstName = $_SESSION['firstName'];
-                                $userSurname = $_SESSION['surName'];
-                                $appointmentInfoArray = array();
-                                array_push($appointmentInfoArray, array("tc"=>$userTc, "firstName"=>$userFirstName, "surname"=>$userSurname));
-                                $allInfoToAppointment = json_encode(array('Appointment'=>$appointmentInfoArray));
-                            ?>
-                            <input type="hidden" name="Appointment" value='<?php echo $allInfoToAppointment; ?>'>
-                            <input type="submit" value="Get Appoinment Info" style="background: #37b7e5; color:white">
+                        <form>
+                            <?php $userTc = $_SESSION['tc']; ?>
+                            <input type="hidden" id="btnSSN" value='<?php echo $userTc; ?>'>
+                            <input type="button" id="btnCallSrvc" value="Get Appoinment Info" style="background: #37b7e5; color:white">
                         </form>
                     </div>
-                    
-                    
                 </div>
-                <?php
-                if(isset($_POST['appoinmentsArray'])){
-                    ?>
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="container">
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>TC</th>
-                                        <th>Name</th>
-                                        <th>Surname</th>
-                                        <th>Doctor Name</th>
-                                        <th>Appointment Date</th>
-                                        <th>Appointment Hour</th>
-                                        <th>Department</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-                                $appoinments = $_POST['appoinmentsArray'];
-                                $serviceParamObj = json_decode($appoinments, true);
-                                for($i = 0; $i < count($appoinments); $i++) { 
-                                    echo "<tr>";
-                                        echo "<td>{$_SESSION['tc']}</td>";
-                                        echo "<td>{$_SESSION['firstName']}</td>";
-                                        echo "<td>{$_SESSION['surName']}</td>";
-                                        echo "<td>{$appoinments[i]->doctorName}</td>";
-                                        echo "<td>{$appoinments[i]->date}</td>";
-                                        echo "<td>{$appoinments[i]->hour}</td>";
-                                        echo "<td>{$appoinments[i]->department}</td>";
-                                    echo "</tr>";
-                                    }
-                                        ?>
-                                </tbody>
-                            </table>
+                        <div class="container" id="divCallResult">
                         </div>
                     </div>
                 </div>
-                <?php
-                }
-                ?>
             </div>
         </div>
+                <script>
+            // JQuery 
+            $(document).ready(function() { // when DOM is ready, this will be executed
+
+            $("#btnCallSrvc").click(function(e) {
+
+                var tcJson = $("#btnSSN").val();
+
+                $.ajax({ // start an ajax POST 
+                    method	: "post",
+                    url		: "https://appointmentmodule.000webhostapp.com/listPatientsAppointments.php",
+                    dataType: "json",
+                    data	:  { 
+                        "SSN"	: "12344378912"
+                    },
+                    success : function(reply) { // when ajax executed successfully
+                        console.log("reply:", reply);
+                        var jsonToString = JSON.stringify(reply);
+                        var json_obj = $.parseJSON(jsonToString);
+                        var table = "<table class='table table-bordered table-hover'>"+
+                                        "<thead>"+
+                                            "<tr>"+
+                                                "<th>Appointment ID</th>"+
+                                                "<th>Name</th>"+
+                                                "<th>TC</th>"+
+                                                "<th>Appointment Date</th>"+
+                                                "<th>Appointment Time</th>"+
+                                                "<th>Branch Name</th>"+
+                                                "<th>Subbranch Name</th>"+
+                                                "<th>Doctor Name</th>"+
+                                            "</tr>"+
+                                        "</thead>"+
+                                        "<tbody>";
+                        console.log(json_obj);
+                        for (i=0; i < json_obj.appointments.length; i++)
+                        {
+                            table+="<tr>";
+                            var appointments = json_obj.appointments[i];
+                            var appointmentID = appointments.AppointmentID;
+                            table+="<td>" + appointmentID + "</td>";
+                            var name = appointments.PatientName;
+                            table+="<td>" + name + "</td>";
+                            var ssn = appointments.PatientSSN;
+                            table+="<td>" + ssn + "</td>";
+                            var date = appointments.Date;
+                            table+="<td>" + date + "</td>";
+                            var time = appointments.Time;
+                            table+="<td>" + time + "</td>";
+                            var branchName = appointments.BranchName;
+                            table+="<td>" + branchName + "</td>";
+                            var subbranchName = appointments.SubbranchName;
+                            table+="<td>" + subbranchName + "</td>";
+                            var doctorName = appointments.DoctorName;
+                            table+="<td>" + doctorName + "</td>";
+                            table+="</tr>";
+                        }
+                        table+="</tbody>"+
+                                    "</table>";
+                        $("#divCallResult").html(table);
+                    },
+                    error   : function(err) { // some unknown error happened
+                        console.log(JSON.stringify(err));
+                        console.log(err);
+                        alert(" There is an error! Please try again. " + err); 
+                    }
+                });
+
+            });
+
+        });
+        </script>
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 <?php include "includes/footer.php"; ?>
