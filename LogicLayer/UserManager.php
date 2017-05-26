@@ -1,5 +1,6 @@
 <?php
 include "User.php";
+include "Assay.php";
 
 class UserManager {
     
@@ -13,7 +14,7 @@ class UserManager {
         mysqli_stmt_bind_result($stmt, $tc, $firstName, $surName, $db_password, $address, $userRole);
         mysqli_stmt_fetch($stmt);
         
-        $user = new User($tc, $firstName, $surName, NULL, NULL, $db_password, NULL, $address, NULL, NULL, $userRole);
+        $user = new User($tc, $firstName, $surName, $userRole, NULL, NULL, $db_password, NULL, NULL, $address, NULL);
             
         //if(password_verify($password, $user->getPassword())) {
         if($password == $user->getPassword()) {
@@ -34,8 +35,8 @@ class UserManager {
 
         //$password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
 
-        $stmt = mysqli_prepare($connection, "INSERT INTO users (tc, firstName, surName, userRole, birthDate, email, password, gender, telephoneNumber, address, bloodType) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
-        mysqli_stmt_bind_param($stmt, "isssssssiss", $user->getTc(), $user->getFirstName(), $user->getSurName(), $user->getUserRole(), $user->getBirthDate(), $user->getEmail(), $user->getPassword(), $user->getGender(), $user->getTel(), $user->getAddress(), $user->getBloodType());
+        $stmt = mysqli_prepare($connection, "INSERT INTO users values(?, ?, ?, 'Patient', ?, ?, ?, ?, ?, ?, ?) ");
+        mysqli_stmt_bind_param($stmt, "issssssiss", $user->getTc(), $user->getFirstName(), $user->getSurName(), $user->getBirthDate(), $user->getEmail(), $user->getPassword(), $user->getGender(), $user->getTel(), $user->getAddress(), $user->getBloodType());
         $flag = mysqli_stmt_execute($stmt);
         if($flag)
             return true;
@@ -70,7 +71,7 @@ class UserManager {
         $query = "SELECT * FROM users WHERE tc = {$tc}";
         $select_user_query = mysqli_query($connection, $query);
         $row = mysqli_fetch_assoc($select_user_query);
-        $user = new User($row['tc'], $row['firstName'], $row['surName'], $row['birthDate'], $row['email'], $row['password'], $row['telephoneNumber'], $row['address'], $row['gender'], $row['bloodType'], $row['userRole']);
+        $user = new User($row['tc'], $row['firstName'], $row['surName'], $row['userRole'], $row['birthDate'], $row['email'], $row['password'], $row['gender'], $row['telephoneNumber'], $row['address'], $row['bloodType']);
         return $user;
     }
 
@@ -92,7 +93,7 @@ class UserManager {
         $allUsers = array();
 
         while($row = mysqli_fetch_assoc($select_user_query)) {
-            $user = new User($row['tc'], $row['firstName'], $row['surName'], $row['birthDate'], $row['email'], $row['password'], $row['telephoneNumber'], $row['address'], $row['gender'], $row['bloodType'], $row['userRole']);
+            $user = new User($row['tc'], $row['firstName'], $row['surName'], $row['userRole'], $row['birthDate'], $row['email'], $row['password'], $row['gender'], $row['telephoneNumber'], $row['address'], $row['bloodType']);
             array_push($allUsers, $user);
         }
 
@@ -115,6 +116,57 @@ class UserManager {
         if($delete_query)
             return true;
         return false;
+    }
+    
+    public static function insertAssay($tc, $assay) {
+        global $connection;
+        if(UserManager::tcExists($tc)) {
+            $query = "INSERT INTO assays(tc, assayNumber) VALUES({$tc}, {$assay})";
+            $insert_query = mysqli_query($connection, $query);
+            if($insert_query)
+                return true;
+            return false;
+        }
+        return false;
+    }
+    
+    public static function maleCount() {
+        global $connection;
+        $query = "SELECT * FROM users WHERE gender LIKE 'Male'";
+        $execute_query = mysqli_query($connection, $query);
+        return mysqli_num_rows($execute_query);
+    }
+    
+    public static function femaleCount() {
+        global $connection;
+        $query = "SELECT * FROM users WHERE gender LIKE 'Female'";
+        $execute_query = mysqli_query($connection, $query);
+        return mysqli_num_rows($execute_query);
+    }
+    
+    public static function getAssayNumbers($tc){
+        global $connection;
+        $query = "SELECT * FROM assays WHERE tc = {$tc}";
+        $select_assays_query = mysqli_query($connection, $query);
+        $allAssays = array();
+        while($row = mysqli_fetch_assoc($select_assays_query)){
+            $assay = new Assay($row['tc'], $row['assayNumber']);
+            array_push($allAssays,$assay);
+        }
+        
+        return $allAssays;
+    }
+    
+    public static function controlAssayNumberExist($assayNum){
+        
+        global $connection;
+        $query  = "SELECT assayNumber FROM assays WHERE assayNumber = '$assayNum'";
+        $result = mysqli_query($connection, $query);
+        if(mysqli_num_rows($result) > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 ?>

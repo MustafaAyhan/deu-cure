@@ -19,6 +19,7 @@
                 Locaitioin to the appointment module
                 */
                 echo "<a href='appointment.php'>APPOINMENT</a>";
+                echo "<a href='emergency.php'>EMERGENCY</a>";
                 /*
                 Location to the laboratuary 
                 */
