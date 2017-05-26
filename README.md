@@ -1,4 +1,5 @@
 # deu-cure
-This is the patient module for a hospital.
+This is the patient module for a hospital simulation.
 
-For the installation, you should have the sql entries and the table.
+You can find the site under the http://deucure.hol.es/deu-cure. 
+If you have questions and bugs have been founded, please contact with mustafa.ayha95@gmail.com or aykuttoprak2315@gmail.com
